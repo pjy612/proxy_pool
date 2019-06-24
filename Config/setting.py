@@ -22,7 +22,7 @@ class ConfigError(BaseException):
 DB_TYPE = getenv('db_type', 'SSDB')
 
 if DB_TYPE == 'SSDB':
-    DB_HOST = getenv('ssdb_host', '127.0.0.1')
+    DB_HOST = getenv('ssdb_host', '172.16.235.82')
     DB_PORT = getenv('ssdb_port', '6379')
 elif DB_TYPE == 'MONGODB':
     DB_HOST = getenv('mongodb_host', '127.0.0.1')
