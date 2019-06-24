@@ -96,12 +96,14 @@ class GetFreeProxy(object):
         url_list = [
             'http://www.xicidaili.com/nn/',  # 高匿
             'http://www.xicidaili.com/nt/',  # 透明
+            'http://www.xicidaili.com/wn/',  # Https
         ]
         for each_url in url_list:
             for i in range(1, page_count + 1):
                 page_url = each_url + str(i)
                 tree = getHtmlTree(page_url)
                 proxy_list = tree.xpath('.//table[@id="ip_list"]//tr[position()>1]')
+                print(proxy_list)
                 for proxy in proxy_list:
                     try:
                         yield ':'.join(proxy.xpath('./td/text()')[0:2])
@@ -291,14 +293,14 @@ if __name__ == '__main__':
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFirst)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxySecond)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyThird)
-    # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFourth)
+    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFourth)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFifth)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxySixth)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxySeventh)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyEight)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyNinth)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyTen)
-    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyEleven)
+    # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyEleven)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyTwelve)
 
     # CheckProxy.checkAllGetProxyFunc()
