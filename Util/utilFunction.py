@@ -99,10 +99,12 @@ def validUsefulProxy(proxy):
     proxies = {"http": "http://{proxy}".format(proxy=proxy)}
     try:
         # 超过20秒的代理就不要了
-        r = requests.get('http://httpbin.org/ip', proxies=proxies, timeout=10, verify=False)
+        r = requests.get('http://httpbin.org/ip', proxies=proxies, timeout=5, verify=False)
         if r.status_code == 200 and r.json().get("origin"):
-            # logger.info('%s is ok' % proxy)
-            return True
+            r2 = requests.get("http://api.live.bilibili.com/room/v1/area/getRoomList?platform=web&parent_area_id=1&cate_id=0&area_id=0&sort_type=online&page=1&page_size=1", proxies=proxies, timeout=2, verify=False)
+            if r2.status_code in (200,403,412):
+                # logger.info('%s is ok' % proxy)
+                return True
     except Exception as e:
         # logger.error(str(e))
         return False

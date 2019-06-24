@@ -45,7 +45,7 @@ DATABASES = {
 
 PROXY_GETTER = [
     "freeProxyFirst",
-    "freeProxySecond",
+    #"freeProxySecond",
     # "freeProxyThird",  # 网站已不能访问
     "freeProxyFourth",
     "freeProxyFifth",
