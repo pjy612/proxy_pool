@@ -93,17 +93,17 @@ class GetFreeProxy(object):
         index2 = js_temp.find("};if((")
         #故技重施，替换代码中的对象以获得数据
         js_temp = js_temp[index1:index2].replace("document.cookie","data2")
-        print(js_temp)
+        #print(js_temp)
         js_temp = 'document = {}; document.createElement = function(x){return {firstChild:{href:"http://www.66ip.cn"},innerHTML:""}}; windows={};' + js_temp
         #print(js_temp)
         context.execute(js_temp)        
         data = context.data2       
-        print(cookie) 
+        #print(cookie) 
         cookie1=re.match(r"\_\_jsluid=(.+?);", cookie)[0]
         cookie2=re.match(r"\_\_jsl\_clearance=(.+?);", data)[0]        
         #合并cookie，重新请求网站。
         cookie = cookie1 + cookie2
-        print(cookie)
+        #print(cookie)
         response = sem.get(url, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763",
             "cookie" : cookie,
