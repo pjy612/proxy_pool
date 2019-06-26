@@ -1,5 +1,5 @@
 .idea/
 *.pyc
 *.log
-/.mypy_cache/
+.mypy_cache
 /.vscode/

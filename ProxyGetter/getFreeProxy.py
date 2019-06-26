@@ -14,6 +14,7 @@
 import re
 import sys
 import requests
+import js2py
 
 sys.path.append('..')
 
@@ -52,7 +53,7 @@ class GetFreeProxy(object):
                     print(e)
 
     @staticmethod
-    def freeProxySecond(count=20):
+    def freeProxySecond(count=100):
         """
         代理66 http://www.66ip.cn/
         :param count: 提取数量
@@ -60,17 +61,56 @@ class GetFreeProxy(object):
         """
         urls = [
             "http://www.66ip.cn/mo.php?sxb=&tqsl={count}&port=&export=&ktip=&sxa=&submit=%CC%E1++%C8%A1&textarea=",
-            "http://www.66ip.cn/nmtq.php?getnum={count}"
-            "&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=1&proxytype=2&api=66ip",
+            "http://www.66ip.cn/nmtq.php?getnum={count}&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=1&proxytype=2&api=66ip",
             ]
         request = WebRequest()
         for _ in urls:
             url = _.format(count=count)
-            html = request.get(url).content
+            html = GetFreeProxy.decode66ip(url).text
+            print(html)
             ips = re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}", html)
             for ip in ips:
                 yield ip.strip()
-
+    @staticmethod
+    def decode66ip(url):
+        sem = requests.session()        
+        response = sem.get(url,
+                    headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763",})
+        #保存第一段cookie
+        cookie=response.headers["Set-Cookie"]
+        #print(cookie)
+        js = response.text.encode("utf8").decode("utf8")
+        #删除script标签并替换eval。
+        js = js.replace("<script>","").replace("</script>","").replace("{eval(","{var data1 = (").replace(chr(0),chr(32))
+        
+        #使用js2py的js交互功能获得刚才赋值的data1对象
+        context = js2py.EvalJs()
+        context.execute(js)
+        js_temp = context.data1
+        
+        #找到cookie生成语句的起始位置
+        index1 = js_temp.find("document.")
+        index2 = js_temp.find("};if((")
+        #故技重施，替换代码中的对象以获得数据
+        js_temp = js_temp[index1:index2].replace("document.cookie","data2")
+        print(js_temp)
+        js_temp = 'document = {}; document.createElement = function(x){return {firstChild:{href:"http://www.66ip.cn"},innerHTML:""}}; windows={};' + js_temp
+        #print(js_temp)
+        context.execute(js_temp)        
+        data = context.data2       
+        print(cookie) 
+        cookie1=re.match(r"\_\_jsluid=(.+?);", cookie)[0]
+        cookie2=re.match(r"\_\_jsl\_clearance=(.+?);", data)[0]        
+        #合并cookie，重新请求网站。
+        cookie = cookie1 + cookie2
+        print(cookie)
+        response = sem.get(url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763",
+            "cookie" : cookie,
+            #"Referer": url,
+            #"Upgrade-Insecure-Requests": "1"
+        })
+        return response
     @staticmethod
     def freeProxyThird(days=1):
         """
@@ -156,8 +196,12 @@ class GetFreeProxy(object):
         快代理 https://www.kuaidaili.com
         """
         url_list = [
-            'https://www.kuaidaili.com/free/inha/',
-            'https://www.kuaidaili.com/free/intr/'
+            'https://www.kuaidaili.com/free/inha/1',
+            'https://www.kuaidaili.com/free/inha/2',
+            'https://www.kuaidaili.com/free/inha/3',
+            'https://www.kuaidaili.com/free/intr/1',
+            'https://www.kuaidaili.com/free/intr/2',
+            'https://www.kuaidaili.com/free/intr/3',
         ]
         for url in url_list:
             tree = getHtmlTree(url)
@@ -202,7 +246,10 @@ class GetFreeProxy(object):
         云代理 http://www.ip3366.net/free/
         :return:
         """
-        urls = ['http://www.ip3366.net/free/']
+        url_type1 = ['http://www.ip3366.net/free/?stype=1&page=%s' % n for n in range(1, 4)]  # 国内高匿
+        url_type2 = ['http://www.ip3366.net/free/?stype=2&page=%s' % n for n in range(1, 4)]  # 国内普通
+        
+        urls = url_type1 + url_type2
         request = WebRequest()
         for url in urls:
             r = request.get(url, timeout=10)

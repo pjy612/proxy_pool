@@ -21,7 +21,7 @@ from Util.utilFunction import validUsefulProxy
 from Manager.ProxyManager import ProxyManager
 from Util.LogHandler import LogHandler
 
-FAIL_COUNT = 1  # 校验失败次数， 超过次数删除代理
+FAIL_COUNT = 5  # 校验失败次数， 超过次数删除代理
 
 
 class ProxyCheck(ProxyManager, Thread):
