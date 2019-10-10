@@ -38,7 +38,7 @@ class ProxyRefreshSchedule(ProxyManager):
 
     def __init__(self):
         ProxyManager.__init__(self)
-        self.log = LogHandler('refresh_schedule')
+        self.log = LogHandler('refresh_schedule', file=False)
 
     def validProxy(self):
         """

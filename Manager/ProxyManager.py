@@ -31,7 +31,7 @@ class ProxyManager(object):
     def __init__(self):
         self.db = DbClient()
         self.raw_proxy_queue = 'raw_proxy'
-        self.log = LogHandler('proxy_manager')
+        self.log = LogHandler('proxy_manager', file=False)
         self.useful_proxy_queue = 'useful_proxy'
 
     def refresh(self):

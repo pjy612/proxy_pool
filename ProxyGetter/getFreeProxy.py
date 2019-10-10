@@ -34,7 +34,10 @@ class GetFreeProxy(object):
     def freeProxyFirst(page=10):
         """
         无忧代理 http://www.data5u.com/
-        几乎没有能用的
+        无忧代理有反爬虫机制。
+        需要获得元素的 classname。
+        匹配classname中每个字符在key中的位置，组合得到一个整数。
+        最后将整数右移3位得到的才是正确的端口号。
         :param page: 页数
         :return:
         """
@@ -43,12 +46,21 @@ class GetFreeProxy(object):
             'http://www.data5u.com/free/gngn/index.shtml',
             'http://www.data5u.com/free/gnpt/index.shtml'
         ]
+        key = 'ABCDEFGHIZ'
         for url in url_list:
             html_tree = getHtmlTree(url)
             ul_list = html_tree.xpath('//ul[@class="l2"]')
             for ul in ul_list:
                 try:
-                    yield ':'.join(ul.xpath('.//li/text()')[0:2])
+                    ip = ul.xpath('./span[1]/li/text()')[0]
+                    classnames =  ul.xpath('./span[2]/li/attribute::class')[0]
+                    classname = classnames.split(' ')[1]
+                    port_sum = 0
+                    for c in classname:
+                        port_sum *= 10
+                        port_sum += key.index(c)
+                    port = port_sum >> 3
+                    yield '{}:{}'.format(ip, port)
                 except Exception as e:
                     print(e)
 
@@ -170,8 +182,20 @@ class GetFreeProxy(object):
             try:
                 # :符号裸放在td下，其他放在div span p中，先分割找出ip，再找port
                 ip_addr = ''.join(each_proxy.xpath(xpath_str))
-                port = each_proxy.xpath(".//span[contains(@class, 'port')]/text()")[0]
-                yield '{}:{}'.format(ip_addr, port)
+
+                # HTML中的port是随机数，真正的端口编码在class后面的字母中。
+                # 比如这个：
+                # <span class="port CFACE">9054</span>
+                # CFACE解码后对应的是3128。
+                port = 0
+                for _ in each_proxy.xpath(".//span[contains(@class, 'port')]"
+                                          "/attribute::class")[0]. \
+                        replace("port ", ""):
+                    port *= 10
+                    port += (ord(_) - ord('A'))
+                port /= 8
+
+                yield '{}:{}'.format(ip_addr, int(port))
             except Exception as e:
                 pass
 
@@ -337,11 +361,11 @@ class GetFreeProxy(object):
 if __name__ == '__main__':
     from CheckProxy import CheckProxy
 
-    # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFirst)
+    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFirst)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxySecond)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyThird)
-    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFourth)
-    # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFifth)
+    # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFourth)
+    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyFifth)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxySixth)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxySeventh)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxyEight)
