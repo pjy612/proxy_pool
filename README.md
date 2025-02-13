@@ -3,7 +3,6 @@ ProxyPool 爬虫代理IP池
 =======
 [![Build Status](https://travis-ci.org/jhao104/proxy_pool.svg?branch=master)](https://travis-ci.org/jhao104/proxy_pool)
 [![](https://img.shields.io/badge/Powered%20by-@j_hao104-green.svg)](http://www.spiderpy.cn/blog/)
-[![Requirements Status](https://requires.io/github/jhao104/proxy_pool/requirements.svg?branch=master)](https://requires.io/github/jhao104/proxy_pool/requirements/?branch=master)
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/jhao104/proxy_pool/blob/master/LICENSE)
 [![GitHub contributors](https://img.shields.io/github/contributors/jhao104/proxy_pool.svg)](https://github.com/jhao104/proxy_pool/graphs/contributors)
 [![](https://img.shields.io/badge/language-Python-green.svg)](https://github.com/jhao104/proxy_pool)
@@ -23,11 +22,18 @@ ProxyPool 爬虫代理IP池
 
 * 文档: [document](https://proxy-pool.readthedocs.io/zh/latest/) [![Documentation Status](https://readthedocs.org/projects/proxy-pool/badge/?version=latest)](https://proxy-pool.readthedocs.io/zh/latest/?badge=latest)
 
-* 支持版本: ![](https://img.shields.io/badge/Python-2.x-green.svg) ![](https://img.shields.io/badge/Python-3.x-blue.svg)
+* 支持版本: [![](https://img.shields.io/badge/Python-2.7-green.svg)](https://docs.python.org/2.7/)
+[![](https://img.shields.io/badge/Python-3.5-blue.svg)](https://docs.python.org/3.5/)
+[![](https://img.shields.io/badge/Python-3.6-blue.svg)](https://docs.python.org/3.6/)
+[![](https://img.shields.io/badge/Python-3.7-blue.svg)](https://docs.python.org/3.7/)
+[![](https://img.shields.io/badge/Python-3.8-blue.svg)](https://docs.python.org/3.8/)
+[![](https://img.shields.io/badge/Python-3.9-blue.svg)](https://docs.python.org/3.9/)
+[![](https://img.shields.io/badge/Python-3.10-blue.svg)](https://docs.python.org/3.10/)
+[![](https://img.shields.io/badge/Python-3.11-blue.svg)](https://docs.python.org/3.11/)
 
 * 测试地址: http://demo.spiderpy.cn (勿压谢谢)
 
-* 付费代理推荐: [luminati-china](https://brightdata.grsm.io/proxyPool). 国外的亮数据BrightData（以前叫luminati）被认为是代理市场领导者，覆盖全球的7200万IP，大部分是真人住宅IP，成功率扛扛的。付费套餐多种，需要高质量代理IP的可以注册后联系中文客服，开通后有5美金赠送和教程指引(PS:用不明白的同学可以参考这个[使用教程](https://www.cnblogs.com/jhao/p/15611785.html))。
+* 付费代理推荐: [luminati-china](https://get.brightdata.com/github_jh). 国外的亮数据BrightData（以前叫luminati）被认为是代理市场领导者，覆盖全球的7200万IP，大部分是真人住宅IP，成功率扛扛的。付费套餐多种，需要高质量代理IP的可以注册后联系中文客服。[申请免费试用](https://get.brightdata.com/github_jh) 目前有50%折扣优惠活动。(PS:用不明白的同学可以参考这个[使用教程](https://www.cnblogs.com/jhao/p/15611785.html))。
 
 
 ### 运行项目
@@ -92,14 +98,19 @@ python proxyPool.py server
 
 ```
 
-### Docker运行
+### Docker Image
 
 ```bash
 docker pull jhao104/proxy_pool
 
-docker run --env DB_CONN=redis://:password@ip:port/0 -p 5010:5010 jhao104/proxy_pool:2.4.0
+docker run --env DB_CONN=redis://:password@ip:port/0 -p 5010:5010 jhao104/proxy_pool:latest
 ```
+### docker-compose
 
+项目目录下运行: 
+``` bash
+docker-compose up -d
+```
 
 ### 使用
 
@@ -194,18 +205,19 @@ PROXY_FETCHER = [
 
    目前实现的采集免费代理网站有(排名不分先后, 下面仅是对其发布的免费代理情况, 付费代理测评可以参考[这里](https://zhuanlan.zhihu.com/p/33576641)): 
    
-  |   代理名称   |  状态  |  更新速度 |  可用率  |  地址 |    代码   |
-  | ---------   |  ---- | --------  | ------  | ----- |   ------- |
-  | 米扑代理     |  ✔    |     ★     |   *     | [地址](https://proxy.mimvp.com/)    | [`freeProxy01`](/fetcher/proxyFetcher.py#L27) |
-  | 66代理      |   ✔   |     ★★    |   *     | [地址](http://www.66ip.cn/)         | [`freeProxy02`](/fetcher/proxyFetcher.py#L52) |
-  | 开心代理     |   ✔   |     ★     |   *     | [地址](http://www.kxdaili.com/)     | [`freeProxy03`](/fetcher/proxyFetcher.py#L65)  |
-  | 蝶鸟IP      |   ✔   |     ★     |   *     | [地址](https://www.dieniao.com/)     | [`freeProxy04`](/fetcher/proxyFetcher.py#L76) |
-  | 快代理       |  ✔    |     ☆     |   *     | [地址](https://www.kuaidaili.com/)  | [`freeProxy05`](/fetcher/proxyFetcher.py#L86)  |
-  | PROXY11     |  ✔    |    ★      |   *     | [地址](https://proxy11.com/)        | [`freeProxy06`](/fetcher/proxyFetcher.py#L105) |
-  | 云代理       |  ✔    |     ★     |   *     | [地址](http://www.ip3366.net/)      | [`freeProxy07`](/fetcher/proxyFetcher.py#L116) |
-  | 小幻代理     |  ✔    |     ★★    |    *    | [地址](https://ip.ihuan.me/)        | [`freeProxy08`](/fetcher/proxyFetcher.py#L126) |
-  | 免费代理库   |  ✔    |      ☆     |    *    | [地址](http://ip.jiangxianli.com/)   | [`freeProxy09`](/fetcher/proxyFetcher.py#L136) |
-  | 89代理      |  ✔    |      ☆     |   *     | [地址](https://www.89ip.cn/)         | [`freeProxy10`](/fetcher/proxyFetcher.py#L147) |
+  | 代理名称          |  状态  |  更新速度 |  可用率  |  地址 | 代码                                             |
+  |---------------|  ---- | --------  | ------  | ----- |------------------------------------------------|
+  | 站大爷           |  ✔    |     ★     |   **     | [地址](https://www.zdaye.com/)    | [`freeProxy01`](/fetcher/proxyFetcher.py#L28)  |
+  | 66代理          |  ✔    |     ★     |   *     | [地址](http://www.66ip.cn/)         | [`freeProxy02`](/fetcher/proxyFetcher.py#L50)  |
+  | 开心代理          |   ✔   |     ★     |   *     | [地址](http://www.kxdaili.com/)     | [`freeProxy03`](/fetcher/proxyFetcher.py#L63)  |
+  | FreeProxyList |   ✔  |    ★     |   *    | [地址](https://www.freeproxylists.net/zh/) | [`freeProxy04`](/fetcher/proxyFetcher.py#L74)  |
+  | 快代理           |  ✔    |     ★     |   *     | [地址](https://www.kuaidaili.com/)  | [`freeProxy05`](/fetcher/proxyFetcher.py#L92)  |
+  | 冰凌代理          |  ✔    |    ★★★    |   *     | [地址](https://www.binglx.cn/) | [`freeProxy06`](/fetcher/proxyFetcher.py#L111) |
+  | 云代理           |  ✔    |    ★     |   *     | [地址](http://www.ip3366.net/)      | [`freeProxy07`](/fetcher/proxyFetcher.py#L123) |
+  | 小幻代理          |  ✔    |    ★★    |    *    | [地址](https://ip.ihuan.me/)        | [`freeProxy08`](/fetcher/proxyFetcher.py#L133) |
+  | 免费代理库         |  ✔    |     ☆     |    *    | [地址](http://ip.jiangxianli.com/)   | [`freeProxy09`](/fetcher/proxyFetcher.py#L143) |
+  | 89代理          |  ✔    |     ☆     |   *     | [地址](https://www.89ip.cn/)         | [`freeProxy10`](/fetcher/proxyFetcher.py#L154) |
+  | 稻壳代理          |  ✔    |     ★★    |   ***   | [地址](https://www.docip.ne)         | [`freeProxy11`](/fetcher/proxyFetcher.py#L164) |
 
   
   如果还有其他好的免费代理网站, 可以在提交在[issues](https://github.com/jhao104/proxy_pool/issues/71), 下次更新时会考虑在项目中支持。
@@ -224,9 +236,11 @@ PROXY_FETCHER = [
 
 　　这里感谢以下contributor的无私奉献：
 
-　　[@kangnwh](https://github.com/kangnwh) | [@bobobo80](https://github.com/bobobo80) | [@halleywj](https://github.com/halleywj) | [@newlyedward](https://github.com/newlyedward) | [@wang-ye](https://github.com/wang-ye) | [@gladmo](https://github.com/gladmo) | [@bernieyangmh](https://github.com/bernieyangmh) | [@PythonYXY](https://github.com/PythonYXY) | [@zuijiawoniu](https://github.com/zuijiawoniu) | [@netAir](https://github.com/netAir) | [@scil](https://github.com/scil) | [@tangrela](https://github.com/tangrela) | [@highroom](https://github.com/highroom) | [@luocaodan](https://github.com/luocaodan) | [@vc5](https://github.com/vc5) | [@1again](https://github.com/1again) | [@obaiyan](https://github.com/obaiyan) | [@zsbh](https://github.com/zsbh) | [@jiannanya](https://github.com/jiannanya)
+　　[@kangnwh](https://github.com/kangnwh) | [@bobobo80](https://github.com/bobobo80) | [@halleywj](https://github.com/halleywj) | [@newlyedward](https://github.com/newlyedward) | [@wang-ye](https://github.com/wang-ye) | [@gladmo](https://github.com/gladmo) | [@bernieyangmh](https://github.com/bernieyangmh) | [@PythonYXY](https://github.com/PythonYXY) | [@zuijiawoniu](https://github.com/zuijiawoniu) | [@netAir](https://github.com/netAir) | [@scil](https://github.com/scil) | [@tangrela](https://github.com/tangrela) | [@highroom](https://github.com/highroom) | [@luocaodan](https://github.com/luocaodan) | [@vc5](https://github.com/vc5) | [@1again](https://github.com/1again) | [@obaiyan](https://github.com/obaiyan) | [@zsbh](https://github.com/zsbh) | [@jiannanya](https://github.com/jiannanya) | [@Jerry12228](https://github.com/Jerry12228)
 
 
 ### Release Notes
 
    [changelog](https://github.com/jhao104/proxy_pool/blob/master/docs/changelog.rst)
+
+<a href="https://hellogithub.com/repository/92a066e658d147cc8bd8397a1cb88183" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=92a066e658d147cc8bd8397a1cb88183&claim_uid=DR60NequsjP54Lc" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
